@@ -29,9 +29,9 @@ type server struct {
 	UnimplementedRouteGuideServer
 	UnimplementedFoobarServer
 
-	savedFeatures []*Feature // read-only after initialized
-
 	mu         sync.Mutex // protects routeNotes
+
+	savedFeatures []*Feature // read-only after initialized
 	routeNotes map[string][]*RouteNote
 }
 

@@ -12,7 +12,7 @@
       minimap: { enabled: false },
       wordWrap: "on",
       theme: "nord-dark",
-      links: false,
+      links: true,
       matchBrackets: "never",
       renderIndentGuides: false,
       renderLineHighlight: "none",

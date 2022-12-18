@@ -18,6 +18,7 @@ type protos struct {
 
 type options struct {
 	ID      string `json:"id"`
+	Name    string `json:"name"`
 	Addr    string `json:"addr"`
 	Reflect bool   `json:"reflect"`
 	Protos  protos `json:"protos"`

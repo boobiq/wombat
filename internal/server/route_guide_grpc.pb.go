@@ -11,6 +11,7 @@ import (
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the grpc package it is being compiled against.
+// Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
 // RouteGuideClient is the client API for RouteGuide service.
@@ -61,7 +62,7 @@ func (c *routeGuideClient) GetFeature(ctx context.Context, in *Point, opts ...gr
 }
 
 func (c *routeGuideClient) ListFeatures(ctx context.Context, in *Rectangle, opts ...grpc.CallOption) (RouteGuide_ListFeaturesClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_RouteGuide_serviceDesc.Streams[0], "/wombat.v1.RouteGuide/ListFeatures", opts...)
+	stream, err := c.cc.NewStream(ctx, &RouteGuide_ServiceDesc.Streams[0], "/wombat.v1.RouteGuide/ListFeatures", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -93,7 +94,7 @@ func (x *routeGuideListFeaturesClient) Recv() (*Feature, error) {
 }
 
 func (c *routeGuideClient) RecordRoute(ctx context.Context, opts ...grpc.CallOption) (RouteGuide_RecordRouteClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_RouteGuide_serviceDesc.Streams[1], "/wombat.v1.RouteGuide/RecordRoute", opts...)
+	stream, err := c.cc.NewStream(ctx, &RouteGuide_ServiceDesc.Streams[1], "/wombat.v1.RouteGuide/RecordRoute", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -127,7 +128,7 @@ func (x *routeGuideRecordRouteClient) CloseAndRecv() (*RouteSummary, error) {
 }
 
 func (c *routeGuideClient) RouteChat(ctx context.Context, opts ...grpc.CallOption) (RouteGuide_RouteChatClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_RouteGuide_serviceDesc.Streams[2], "/wombat.v1.RouteGuide/RouteChat", opts...)
+	stream, err := c.cc.NewStream(ctx, &RouteGuide_ServiceDesc.Streams[2], "/wombat.v1.RouteGuide/RouteChat", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -214,7 +215,7 @@ type UnsafeRouteGuideServer interface {
 }
 
 func RegisterRouteGuideServer(s grpc.ServiceRegistrar, srv RouteGuideServer) {
-	s.RegisterService(&_RouteGuide_serviceDesc, srv)
+	s.RegisterService(&RouteGuide_ServiceDesc, srv)
 }
 
 func _RouteGuide_GetFeature_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -308,7 +309,10 @@ func (x *routeGuideRouteChatServer) Recv() (*RouteNote, error) {
 	return m, nil
 }
 
-var _RouteGuide_serviceDesc = grpc.ServiceDesc{
+// RouteGuide_ServiceDesc is the grpc.ServiceDesc for RouteGuide service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var RouteGuide_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "wombat.v1.RouteGuide",
 	HandlerType: (*RouteGuideServer)(nil),
 	Methods: []grpc.MethodDesc{

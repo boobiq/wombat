@@ -11,6 +11,7 @@ import (
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the grpc package it is being compiled against.
+// Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
 // FoobarClient is the client API for Foobar service.
@@ -23,6 +24,7 @@ type FoobarClient interface {
 	Foo(ctx context.Context, in *FooRequest, opts ...grpc.CallOption) (*FooResponse, error)
 	Empty(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*EmptyResponse, error)
 	WellKnown(ctx context.Context, in *WellKnownRequest, opts ...grpc.CallOption) (*WellKnownResponse, error)
+	SingleOneof(ctx context.Context, in *SingleOneofRequest, opts ...grpc.CallOption) (*SingleOneofResponse, error)
 }
 
 type foobarClient struct {
@@ -87,6 +89,15 @@ func (c *foobarClient) WellKnown(ctx context.Context, in *WellKnownRequest, opts
 	return out, nil
 }
 
+func (c *foobarClient) SingleOneof(ctx context.Context, in *SingleOneofRequest, opts ...grpc.CallOption) (*SingleOneofResponse, error) {
+	out := new(SingleOneofResponse)
+	err := c.cc.Invoke(ctx, "/wombat.v1.Foobar/SingleOneof", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FoobarServer is the server API for Foobar service.
 // All implementations must embed UnimplementedFoobarServer
 // for forward compatibility
@@ -97,6 +108,7 @@ type FoobarServer interface {
 	Foo(context.Context, *FooRequest) (*FooResponse, error)
 	Empty(context.Context, *EmptyRequest) (*EmptyResponse, error)
 	WellKnown(context.Context, *WellKnownRequest) (*WellKnownResponse, error)
+	SingleOneof(context.Context, *SingleOneofRequest) (*SingleOneofResponse, error)
 	mustEmbedUnimplementedFoobarServer()
 }
 
@@ -122,6 +134,9 @@ func (UnimplementedFoobarServer) Empty(context.Context, *EmptyRequest) (*EmptyRe
 func (UnimplementedFoobarServer) WellKnown(context.Context, *WellKnownRequest) (*WellKnownResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method WellKnown not implemented")
 }
+func (UnimplementedFoobarServer) SingleOneof(context.Context, *SingleOneofRequest) (*SingleOneofResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SingleOneof not implemented")
+}
 func (UnimplementedFoobarServer) mustEmbedUnimplementedFoobarServer() {}
 
 // UnsafeFoobarServer may be embedded to opt out of forward compatibility for this service.
@@ -132,7 +147,7 @@ type UnsafeFoobarServer interface {
 }
 
 func RegisterFoobarServer(s grpc.ServiceRegistrar, srv FoobarServer) {
-	s.RegisterService(&_Foobar_serviceDesc, srv)
+	s.RegisterService(&Foobar_ServiceDesc, srv)
 }
 
 func _Foobar_AFoo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -243,7 +258,28 @@ func _Foobar_WellKnown_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
-var _Foobar_serviceDesc = grpc.ServiceDesc{
+func _Foobar_SingleOneof_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SingleOneofRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FoobarServer).SingleOneof(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/wombat.v1.Foobar/SingleOneof",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FoobarServer).SingleOneof(ctx, req.(*SingleOneofRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// Foobar_ServiceDesc is the grpc.ServiceDesc for Foobar service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var Foobar_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "wombat.v1.Foobar",
 	HandlerType: (*FoobarServer)(nil),
 	Methods: []grpc.MethodDesc{
@@ -270,6 +306,10 @@ var _Foobar_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "WellKnown",
 			Handler:    _Foobar_WellKnown_Handler,
+		},
+		{
+			MethodName: "SingleOneof",
+			Handler:    _Foobar_SingleOneof_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

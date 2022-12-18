@@ -5,14 +5,21 @@
   import WorkspaceOptions from "./WorkspaceOptions.svelte";
   import WorkspaceSwitcher from "./WorkspaceSwitcher.svelte";
 
-  let addr = "";
-  wails.Events.On("wombat:client_connected", data => addr = data);
+  let title = "";
+  let subtitle = "";
+  wails.Events.On("wombat:client_connected", (dataAddr, dataName) => {
+    title = dataAddr
+    if (dataName !== "") {
+      title = dataName
+      subtitle = dataAddr
+    }
+  })
 
   let status = "";
   wails.Events.On("wombat:client_state_changed", data => status = data.toLowerCase());
 
   wails.Events.On("wombat:client_connect_started", data => {
-    addr = data;
+    title = data;
     status = "connecting";
   })
 
@@ -42,6 +49,7 @@
 
   .workspace-select {
     display: flex;
+    align-items: center;
     margin-left: calc(var(--padding) + 20px);
   }
 
@@ -108,7 +116,8 @@
   </div>
   <div on:click={() => wkspSelectorVisible = true} class="workspace-select">
     <div class="connection">
-      <h1>{addr}</h1>
+      <h1>{title}</h1>
+      {subtitle}
       <h3 class={status}>{status}</h3>
     </div>
     <svg class="dropdown-indicator" width="20" height="20" viewBox="0 0 20 20">

@@ -5,6 +5,7 @@ var exampleData = []byte(`[{
         "latitude": 407838351,
         "longitude": -746143763
     },
+	"link": "https://www.dsl.sk/",
     "name": "Patriots Path, Mendham, NJ 07945, USA"
 }, {
     "location": {

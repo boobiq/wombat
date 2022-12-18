@@ -384,7 +384,7 @@ func (a *api) Connect(data, rawHeaders interface{}, save bool) (rerr error) {
 		return fmt.Errorf("failed to connect to server: %v", err)
 	}
 
-	a.runtime.Events.Emit(eventClientConnected, opts.Addr)
+	a.runtime.Events.Emit(eventClientConnected, opts.Addr, opts.Name)
 
 	go a.loadProtoFiles(opts, hds, false)
 

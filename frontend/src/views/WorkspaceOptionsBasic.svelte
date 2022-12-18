@@ -36,7 +36,11 @@
 </style>
 
 <div class="workspace-options-basic">
-  <TextField label="gRPC server address:" bind:value={options.addr} />
+  <div class="protos">
+    <TextField label="gRPC server address:" bind:value={options.addr} />
+    <div class="spacer" />
+    <TextField label="Name (optional):" bind:value={options.name} />
+  </div>
   <Checkbox label="Use reflection to determine the RPC schema" rhs bind:checked={options.reflect} />
   <div class="protos">
     <FileList on:action={onFilesAction} on:clear={onFilesClear} files={options.protos.files} label="Proto source file(s):" actionText="Find *.proto files" actionColor="var(--primary-color)" />

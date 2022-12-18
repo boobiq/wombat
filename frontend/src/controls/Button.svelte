@@ -7,7 +7,7 @@
 </script>
 
 <button
-  on:click 
+  on:click
   class:border
   style="background-color:{bgColor}; color:{color}; {style}">
   {text}
